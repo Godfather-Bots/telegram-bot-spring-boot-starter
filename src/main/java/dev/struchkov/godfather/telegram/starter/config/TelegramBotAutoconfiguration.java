@@ -14,9 +14,7 @@ import dev.struchkov.godfather.simple.core.service.PersonSettingServiceImpl;
 import dev.struchkov.godfather.simple.core.service.StorylineMailService;
 import dev.struchkov.godfather.simple.core.service.StorylineService;
 import dev.struchkov.godfather.simple.core.service.UnitPointerServiceImpl;
-import dev.struchkov.godfather.telegram.domain.config.TelegramBotConfig;
 import dev.struchkov.godfather.telegram.main.context.TelegramConnect;
-import dev.struchkov.godfather.telegram.main.core.TelegramDefaultConnect;
 import dev.struchkov.godfather.telegram.simple.consumer.EventDistributorService;
 import dev.struchkov.godfather.telegram.simple.context.repository.SenderRepository;
 import dev.struchkov.godfather.telegram.simple.context.service.EventDistributor;
@@ -30,11 +28,10 @@ import dev.struchkov.godfather.telegram.starter.UnitConfiguration;
 import dev.struchkov.godfather.telegram.starter.property.TelegramBotAutoresponderProperty;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,20 +42,8 @@ import static dev.struchkov.godfather.telegram.starter.TelegramBotBeanName.AUTOR
 import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 
 @Configuration
+@AutoConfigureAfter(TelegramBotDataConfiguration.class)
 public class TelegramBotAutoconfiguration {
-
-    @Bean
-    @Primary
-    @ConditionalOnProperty(prefix = "telegram.bot", name = "username")
-    public TelegramConnectBot telegramConnectBot(TelegramBotConfig telegramConfig) {
-        return new TelegramConnectBot(telegramConfig);
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "telegram.bot", name = "token")
-    public TelegramDefaultConnect telegramDefaultConnect(TelegramBotConfig telegramConfig) {
-        return new TelegramDefaultConnect(telegramConfig);
-    }
 
     @ConditionalOnBean(TelegramConnectBot.class)
     @Bean(AUTORESPONDER_EXECUTORS_SERVICE)
@@ -75,11 +60,13 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(UnitPointerRepository.class)
     public UnitPointerService unitPointerService(UnitPointerRepository unitPointerRepository) {
         return new UnitPointerServiceImpl(unitPointerRepository);
     }
 
     @Bean
+    @ConditionalOnBean(PersonSettingRepository.class)
     public PersonSettingService personSettingService(PersonSettingRepository personSettingRepository) {
         return new PersonSettingServiceImpl(personSettingRepository);
     }
@@ -133,11 +120,13 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(MailAutoresponderTelegram.class)
     public StoryLineHandler storyLineHandler(MailAutoresponderTelegram mailAutoresponderTelegram) {
         return new StoryLineHandler(mailAutoresponderTelegram);
     }
 
     @Bean
+    @ConditionalOnBean(TelegramConnectBot.class)
     public EventDistributor eventDistributor(
             TelegramConnectBot telegramConnect, List<EventHandler> eventProviders
     ) {
@@ -145,6 +134,7 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
+    @ConditionalOnBean(value = {UnitPointerService.class, StorylineRepository.class})
     public StorylineService<Mail> storylineService(
             UnitPointerService unitPointerService,
             StorylineRepository storylineRepository,
