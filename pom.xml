@@ -41,6 +41,22 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>dev.struchkov.godfather.telegram</groupId>
+			<artifactId>telegram-consumer-simple</artifactId>
+			<version>${telegram.bot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>dev.struchkov.godfather.telegram</groupId>
+			<artifactId>telegram-core-simple</artifactId>
+			<version>${telegram.bot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>dev.struchkov.godfather.telegram</groupId>
+			<artifactId>telegram-sender-simple</artifactId>
+			<version>${telegram.bot.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 			<optional>true</optional>
