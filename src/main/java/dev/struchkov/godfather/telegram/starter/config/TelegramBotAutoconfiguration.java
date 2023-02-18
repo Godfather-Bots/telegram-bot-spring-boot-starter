@@ -1,8 +1,7 @@
-package dev.struchkov.godfather.telegram.starter;
+package dev.struchkov.godfather.telegram.starter.config;
 
 import dev.struchkov.godfather.main.domain.content.Mail;
 import dev.struchkov.godfather.simple.context.repository.PersonSettingRepository;
-import dev.struchkov.godfather.simple.context.repository.StorylineContext;
 import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
 import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.context.service.ErrorHandler;
@@ -12,15 +11,12 @@ import dev.struchkov.godfather.simple.context.service.UnitPointerService;
 import dev.struchkov.godfather.simple.core.action.AnswerTextAction;
 import dev.struchkov.godfather.simple.core.provider.StoryLineHandler;
 import dev.struchkov.godfather.simple.core.service.PersonSettingServiceImpl;
-import dev.struchkov.godfather.simple.core.service.StorylineContextMapImpl;
 import dev.struchkov.godfather.simple.core.service.StorylineMailService;
 import dev.struchkov.godfather.simple.core.service.StorylineService;
 import dev.struchkov.godfather.simple.core.service.UnitPointerServiceImpl;
-import dev.struchkov.godfather.simple.data.repository.impl.PersonSettingLocalRepository;
-import dev.struchkov.godfather.simple.data.repository.impl.StorylineMapRepository;
-import dev.struchkov.godfather.simple.data.repository.impl.UnitPointLocalRepository;
-import dev.struchkov.godfather.telegram.domain.config.TelegramConnectConfig;
+import dev.struchkov.godfather.telegram.domain.config.TelegramBotConfig;
 import dev.struchkov.godfather.telegram.main.context.TelegramConnect;
+import dev.struchkov.godfather.telegram.main.core.TelegramDefaultConnect;
 import dev.struchkov.godfather.telegram.simple.consumer.EventDistributorService;
 import dev.struchkov.godfather.telegram.simple.context.repository.SenderRepository;
 import dev.struchkov.godfather.telegram.simple.context.service.EventDistributor;
@@ -28,42 +24,48 @@ import dev.struchkov.godfather.telegram.simple.context.service.TelegramSending;
 import dev.struchkov.godfather.telegram.simple.context.service.TelegramService;
 import dev.struchkov.godfather.telegram.simple.core.MailAutoresponderTelegram;
 import dev.struchkov.godfather.telegram.simple.core.TelegramConnectBot;
-import dev.struchkov.godfather.telegram.simple.core.service.SenderMapRepository;
 import dev.struchkov.godfather.telegram.simple.core.service.TelegramServiceImpl;
 import dev.struchkov.godfather.telegram.simple.sender.TelegramSender;
+import dev.struchkov.godfather.telegram.starter.UnitConfiguration;
+import dev.struchkov.godfather.telegram.starter.property.TelegramBotAutoresponderProperty;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static dev.struchkov.godfather.telegram.starter.TelegramBotBeanName.AUTORESPONDER_EXECUTORS_SERVICE;
 import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 
 @Configuration
 public class TelegramBotAutoconfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "telegram-bot", name = "bot-username")
-    public TelegramConnectBot telegramConnectBot(TelegramConnectConfig telegramConfig) {
+    @Primary
+    @ConditionalOnProperty(prefix = "telegram.bot", name = "username")
+    public TelegramConnectBot telegramConnectBot(TelegramBotConfig telegramConfig) {
         return new TelegramConnectBot(telegramConfig);
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean(TelegramConnectBot.class)
-//    @ConditionalOnProperty("telegram-bot.bot-username")
-//    public TelegramConnect telegramDefaultConnect(TelegramConnectConfig telegramConfig) {
-//        return new TelegramDefaultConnect(telegramConfig);
-//    }
+    @Bean
+    @ConditionalOnProperty(prefix = "telegram.bot", name = "token")
+    public TelegramDefaultConnect telegramDefaultConnect(TelegramBotConfig telegramConfig) {
+        return new TelegramDefaultConnect(telegramConfig);
+    }
 
-    @Bean("messageExecutorService")
-    public ExecutorService executorService() {
-        return Executors.newFixedThreadPool(3);
+    @ConditionalOnBean(TelegramConnectBot.class)
+    @Bean(AUTORESPONDER_EXECUTORS_SERVICE)
+    public ExecutorService executorService(
+            TelegramBotAutoresponderProperty autoresponderProperty
+    ) {
+        return Executors.newFixedThreadPool(autoresponderProperty.getThreads());
     }
 
     @Bean
@@ -73,23 +75,8 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
-    public StorylineContext storylineContext() {
-        return new StorylineContextMapImpl();
-    }
-
-    @Bean
-    public UnitPointerRepository unitPointerRepository() {
-        return new UnitPointLocalRepository();
-    }
-
-    @Bean
     public UnitPointerService unitPointerService(UnitPointerRepository unitPointerRepository) {
         return new UnitPointerServiceImpl(unitPointerRepository);
-    }
-
-    @Bean
-    public PersonSettingRepository personSettingRepository() {
-        return new PersonSettingLocalRepository();
     }
 
     @Bean
@@ -98,13 +85,9 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
-    public StorylineRepository storylineRepository() {
-        return new StorylineMapRepository();
-    }
-
-    @Bean
+    @ConditionalOnBean(TelegramConnectBot.class)
     public MailAutoresponderTelegram messageAutoresponderTelegram(
-            @Qualifier("messageExecutorService") ObjectProvider<ExecutorService> executorServiceProvider,
+            @Qualifier(AUTORESPONDER_EXECUTORS_SERVICE) ObjectProvider<ExecutorService> executorServiceProvider,
             TelegramSending sending,
             PersonSettingService personSettingService,
             ObjectProvider<ErrorHandler> errorHandlerProvider,
@@ -131,11 +114,6 @@ public class TelegramBotAutoconfiguration {
             autoresponder.initTextAnswerActionUnit(answerTextAction);
         }
         return autoresponder;
-    }
-
-    @Bean
-    public SenderRepository senderRepository() {
-        return new SenderMapRepository();
     }
 
     @Bean

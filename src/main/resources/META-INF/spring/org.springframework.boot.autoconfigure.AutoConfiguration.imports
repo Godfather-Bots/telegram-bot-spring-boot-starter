@@ -1,0 +1,3 @@
+dev.struchkov.godfather.telegram.starter.config.TelegramBotPropertyConfiguration
+dev.struchkov.godfather.telegram.starter.config.TelegramBotDataConfiguration
+dev.struchkov.godfather.telegram.starter.config.TelegramBotAutoconfiguration

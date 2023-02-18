@@ -10,13 +10,8 @@
     </parent>
 
     <groupId>dev.struchkov.godfather.telegram</groupId>
-    <artifactId>telegram-bot-spring-boot-starter-parent</artifactId>
+    <artifactId>telegram-bot-spring-boot-starter</artifactId>
     <version>0.0.50-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>telegram-bot-spring-boot-autoconfiguration</module>
-        <module>telegram-bot-spring-boot-starter</module>
-    </modules>
 
     <properties>
         <java.version>17</java.version>
@@ -26,6 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <telegram.bot.version>0.0.50-SNAPSHOT</telegram.bot.version>
+        <godfather.version>0.0.52-SNAPSHOT</godfather.version>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
@@ -41,31 +37,45 @@
         <plugin.maven.release.ver>3.0.0-M7</plugin.maven.release.ver>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>dev.struchkov.godfather.telegram</groupId>
-                <artifactId>telegram-bot-spring-boot-autoconfiguration</artifactId>
-                <version>0.0.50-SNAPSHOT</version>
-            </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>dev.struchkov.godfather.telegram</groupId>
+            <artifactId>telegram-bot-spring-boot-autoconfiguration</artifactId>
+            <version>0.0.50-SNAPSHOT</version>
+        </dependency>
 
-            <dependency>
-                <groupId>dev.struchkov.godfather.telegram</groupId>
-                <artifactId>telegram-consumer-simple</artifactId>
-                <version>${telegram.bot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>dev.struchkov.godfather.telegram</groupId>
-                <artifactId>telegram-core-simple</artifactId>
-                <version>${telegram.bot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>dev.struchkov.godfather.telegram</groupId>
-                <artifactId>telegram-sender-simple</artifactId>
-                <version>${telegram.bot.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+        <dependency>
+            <groupId>dev.struchkov.godfather.telegram</groupId>
+            <artifactId>telegram-consumer-simple</artifactId>
+            <version>${telegram.bot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.struchkov.godfather.telegram</groupId>
+            <artifactId>telegram-core-simple</artifactId>
+            <version>${telegram.bot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.struchkov.godfather.telegram</groupId>
+            <artifactId>telegram-sender-simple</artifactId>
+            <version>${telegram.bot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.struchkov.godfather</groupId>
+            <artifactId>bot-data-simple</artifactId>
+            <version>${godfather.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
@@ -287,7 +297,8 @@
     <scm>
         <connection>scm:git:https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter.git</connection>
         <url>https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter</url>
-        <developerConnection>scm:git:https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter.git</developerConnection>
+        <developerConnection>scm:git:https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter.git
+        </developerConnection>
         <tag>HEAD</tag>
     </scm>
 
