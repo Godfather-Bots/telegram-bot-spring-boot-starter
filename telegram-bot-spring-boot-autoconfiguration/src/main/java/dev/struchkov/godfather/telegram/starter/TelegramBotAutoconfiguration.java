@@ -1,6 +1,10 @@
 package dev.struchkov.godfather.telegram.starter;
 
 import dev.struchkov.godfather.main.domain.content.Mail;
+import dev.struchkov.godfather.simple.context.repository.PersonSettingRepository;
+import dev.struchkov.godfather.simple.context.repository.StorylineContext;
+import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
+import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.context.service.ErrorHandler;
 import dev.struchkov.godfather.simple.context.service.EventHandler;
 import dev.struchkov.godfather.simple.context.service.PersonSettingService;
@@ -12,10 +16,6 @@ import dev.struchkov.godfather.simple.core.service.StorylineContextMapImpl;
 import dev.struchkov.godfather.simple.core.service.StorylineMailService;
 import dev.struchkov.godfather.simple.core.service.StorylineService;
 import dev.struchkov.godfather.simple.core.service.UnitPointerServiceImpl;
-import dev.struchkov.godfather.simple.data.StorylineContext;
-import dev.struchkov.godfather.simple.data.repository.PersonSettingRepository;
-import dev.struchkov.godfather.simple.data.repository.StorylineRepository;
-import dev.struchkov.godfather.simple.data.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.data.repository.impl.PersonSettingLocalRepository;
 import dev.struchkov.godfather.simple.data.repository.impl.StorylineMapRepository;
 import dev.struchkov.godfather.simple.data.repository.impl.UnitPointLocalRepository;

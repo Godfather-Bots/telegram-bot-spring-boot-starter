@@ -11,7 +11,7 @@
 
     <groupId>dev.struchkov.godfather.telegram</groupId>
     <artifactId>telegram-bot-spring-boot-starter-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.50-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>telegram-bot-spring-boot-autoconfiguration</module>
@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <telegram.bot.version>0.0.49</telegram.bot.version>
+        <telegram.bot.version>0.0.50-SNAPSHOT</telegram.bot.version>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
