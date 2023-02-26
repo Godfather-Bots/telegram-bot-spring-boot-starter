@@ -20,8 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <telegram.bot.version>0.0.50-SNAPSHOT</telegram.bot.version>
-        <godfather.version>0.0.52-SNAPSHOT</godfather.version>
+        <telegram.bot.version>0.0.50</telegram.bot.version>
+        <godfather.version>0.0.52</godfather.version>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
@@ -38,12 +38,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>dev.struchkov.godfather.telegram</groupId>
-            <artifactId>telegram-bot-spring-boot-autoconfiguration</artifactId>
-            <version>0.0.50-SNAPSHOT</version>
-        </dependency>
-
         <dependency>
             <groupId>dev.struchkov.godfather.telegram</groupId>
             <artifactId>telegram-consumer-simple</artifactId>
