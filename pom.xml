@@ -19,8 +19,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <telegram.bot.version>0.0.52-SNAPSHOT</telegram.bot.version>
-        <godfather.version>0.0.53-SNAPSHOT</godfather.version>
+        <telegram.bot.version>0.0.52</telegram.bot.version>
+        <godfather.version>0.0.53</godfather.version>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
