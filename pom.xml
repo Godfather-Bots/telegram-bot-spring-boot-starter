@@ -10,7 +10,7 @@
 
     <groupId>dev.struchkov.godfather.telegram</groupId>
     <artifactId>telegram-bot-spring-boot-starter</artifactId>
-    <version>0.0.53</version>
+    <version>0.0.54-SNAPSHOT</version>
 
     <properties>
         <java.version>17</java.version>
@@ -297,7 +297,7 @@
         <url>https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter</url>
         <developerConnection>scm:git:https://git.struchkov.dev/Godfather-Bots/telegram-bot-spring-boot-starter.git
         </developerConnection>
-        <tag>v.0.0.53</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
