@@ -2,8 +2,10 @@ package dev.struchkov.godfather.telegram.starter.config;
 
 import dev.struchkov.godfather.telegram.domain.config.ProxyConfig;
 import dev.struchkov.godfather.telegram.domain.config.TelegramBotConfig;
-import dev.struchkov.godfather.telegram.main.core.TelegramDefaultConnect;
-import dev.struchkov.godfather.telegram.simple.core.TelegramConnectBot;
+import dev.struchkov.godfather.telegram.simple.context.service.TelegramConnect;
+import dev.struchkov.godfather.telegram.simple.core.TelegramDefaultConnect;
+import dev.struchkov.godfather.telegram.simple.core.TelegramPollingConnect;
+import dev.struchkov.godfather.telegram.simple.core.TelegramWebhookConnect;
 import dev.struchkov.godfather.telegram.starter.property.TelegramBotAutoresponderProperty;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -49,13 +51,20 @@ public class TelegramBotPropertyConfiguration {
     @Bean
     @Primary
     @ConditionalOnProperty(prefix = "telegram.bot", name = "username")
-    public TelegramConnectBot telegramConnectBot(TelegramBotConfig telegramConfig) {
-        return new TelegramConnectBot(telegramConfig);
+    public TelegramConnect telegramConnectBot(TelegramBotConfig telegramConfig) {
+        return new TelegramPollingConnect(telegramConfig);
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnProperty(prefix = "telegram.bot", name = "webhook-url")
+    public TelegramConnect telegramWebhookConnect(TelegramBotConfig telegramConfig) {
+        return new TelegramWebhookConnect(telegramConfig);
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "telegram.bot", name = "token")
-    public TelegramDefaultConnect telegramDefaultConnect(TelegramBotConfig telegramConfig) {
+    public TelegramConnect telegramDefaultConnect(TelegramBotConfig telegramConfig) {
         return new TelegramDefaultConnect(telegramConfig);
     }
 

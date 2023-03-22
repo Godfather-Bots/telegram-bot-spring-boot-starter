@@ -19,15 +19,14 @@ import dev.struchkov.godfather.simple.core.service.PersonSettingServiceImpl;
 import dev.struchkov.godfather.simple.core.service.StorylineMailService;
 import dev.struchkov.godfather.simple.core.service.StorylineService;
 import dev.struchkov.godfather.simple.core.service.UnitPointerServiceImpl;
-import dev.struchkov.godfather.telegram.main.context.TelegramConnect;
 import dev.struchkov.godfather.telegram.simple.consumer.EventDistributorService;
 import dev.struchkov.godfather.telegram.simple.context.repository.SenderRepository;
 import dev.struchkov.godfather.telegram.simple.context.service.EventDistributor;
+import dev.struchkov.godfather.telegram.simple.context.service.TelegramConnect;
 import dev.struchkov.godfather.telegram.simple.context.service.TelegramSending;
 import dev.struchkov.godfather.telegram.simple.context.service.TelegramService;
 import dev.struchkov.godfather.telegram.simple.core.ChatMailAutoresponderTelegram;
 import dev.struchkov.godfather.telegram.simple.core.MailAutoresponderTelegram;
-import dev.struchkov.godfather.telegram.simple.core.TelegramConnectBot;
 import dev.struchkov.godfather.telegram.simple.core.service.TelegramServiceImpl;
 import dev.struchkov.godfather.telegram.simple.sender.TelegramSender;
 import dev.struchkov.godfather.telegram.starter.ChatUnitConfiguration;
@@ -52,7 +51,7 @@ import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 @AutoConfigureAfter(TelegramBotDataConfiguration.class)
 public class TelegramBotAutoconfiguration {
 
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     @Bean(AUTORESPONDER_EXECUTORS_SERVICE)
     public ExecutorService executorService(
             TelegramBotAutoresponderProperty autoresponderProperty
@@ -205,9 +204,9 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     public EventDistributor eventDistributor(
-            TelegramConnectBot telegramConnect, List<? extends EventHandler> eventProviders
+            TelegramConnect telegramConnect, List<? extends EventHandler> eventProviders
     ) {
         return new EventDistributorService(telegramConnect, (List<EventHandler>) eventProviders);
     }

@@ -9,7 +9,7 @@ import dev.struchkov.godfather.simple.data.repository.impl.PersonSettingLocalRep
 import dev.struchkov.godfather.simple.data.repository.impl.StorylineMapRepository;
 import dev.struchkov.godfather.simple.data.repository.impl.UnitPointLocalRepository;
 import dev.struchkov.godfather.telegram.simple.context.repository.SenderRepository;
-import dev.struchkov.godfather.telegram.simple.core.TelegramConnectBot;
+import dev.struchkov.godfather.telegram.simple.context.service.TelegramConnect;
 import dev.struchkov.godfather.telegram.simple.core.service.SenderMapRepository;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,21 +22,21 @@ import org.springframework.context.annotation.Configuration;
 public class TelegramBotDataConfiguration {
 
     @Bean
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     @ConditionalOnMissingBean(UnitPointerRepository.class)
     public UnitPointerRepository unitPointerRepository() {
         return new UnitPointLocalRepository();
     }
 
     @Bean
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     @ConditionalOnMissingBean(PersonSettingRepository.class)
     public PersonSettingRepository personSettingRepository() {
         return new PersonSettingLocalRepository();
     }
 
     @Bean
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     @ConditionalOnMissingBean(StorylineRepository.class)
     public StorylineRepository storylineRepository() {
         return new StorylineMapRepository();
@@ -49,7 +49,7 @@ public class TelegramBotDataConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(TelegramConnectBot.class)
+    @ConditionalOnBean(TelegramConnect.class)
     public StorylineContext storylineContext() {
         return new StorylineContextMapImpl();
     }
