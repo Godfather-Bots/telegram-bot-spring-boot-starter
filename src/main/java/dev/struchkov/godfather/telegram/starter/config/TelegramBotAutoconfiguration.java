@@ -6,9 +6,11 @@ import dev.struchkov.godfather.simple.context.repository.PersonSettingRepository
 import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
 import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.context.service.ErrorHandler;
+import dev.struchkov.godfather.simple.context.service.EventDispatching;
 import dev.struchkov.godfather.simple.context.service.EventHandler;
 import dev.struchkov.godfather.simple.context.service.PersonSettingService;
 import dev.struchkov.godfather.simple.context.service.UnitPointerService;
+import dev.struchkov.godfather.simple.core.EventDispatchingImpl;
 import dev.struchkov.godfather.simple.core.action.AnswerCheckAction;
 import dev.struchkov.godfather.simple.core.action.AnswerSaveAction;
 import dev.struchkov.godfather.simple.core.action.AnswerTextChatMailAction;
@@ -36,6 +38,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -204,11 +207,17 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(TelegramConnect.class)
+    @ConditionalOnMissingBean(EventDispatching.class)
+    public EventDispatching eventDispatching(List<EventHandler> eventHandlers) {
+        return new EventDispatchingImpl(eventHandlers);
+    }
+
+    @Bean
+    @ConditionalOnBean(EventDispatching.class)
     public EventDistributor eventDistributor(
-            TelegramConnect telegramConnect, List<? extends EventHandler> eventProviders
+            TelegramConnect telegramConnect, EventDispatching eventDispatching
     ) {
-        return new EventDistributorService(telegramConnect, (List<EventHandler>) eventProviders);
+        return new EventDistributorService(telegramConnect, eventDispatching);
     }
 
 }
