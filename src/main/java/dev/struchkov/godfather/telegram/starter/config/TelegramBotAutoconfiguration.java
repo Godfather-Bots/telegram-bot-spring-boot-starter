@@ -214,6 +214,7 @@ public class TelegramBotAutoconfiguration {
 
     @Bean
     @ConditionalOnBean(EventDispatching.class)
+    @ConditionalOnMissingBean(EventDistributor.class)
     public EventDistributor eventDistributor(
             TelegramConnect telegramConnect, EventDispatching eventDispatching
     ) {
