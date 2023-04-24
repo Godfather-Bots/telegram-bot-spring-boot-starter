@@ -2,13 +2,11 @@ package dev.struchkov.godfather.telegram.starter.config;
 
 import dev.struchkov.godfather.main.domain.content.ChatMail;
 import dev.struchkov.godfather.main.domain.content.Mail;
-import dev.struchkov.godfather.simple.context.repository.PersonSettingRepository;
 import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
 import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.context.service.ErrorHandler;
 import dev.struchkov.godfather.simple.context.service.EventDispatching;
 import dev.struchkov.godfather.simple.context.service.EventHandler;
-import dev.struchkov.godfather.simple.context.service.PersonSettingService;
 import dev.struchkov.godfather.simple.context.service.UnitPointerService;
 import dev.struchkov.godfather.simple.core.EventDispatchingImpl;
 import dev.struchkov.godfather.simple.core.action.AnswerCheckAction;
@@ -17,7 +15,6 @@ import dev.struchkov.godfather.simple.core.action.AnswerTextChatMailAction;
 import dev.struchkov.godfather.simple.core.action.AnswerTextMailAction;
 import dev.struchkov.godfather.simple.core.provider.ChatStoryLineHandler;
 import dev.struchkov.godfather.simple.core.provider.PersonStoryLineHandler;
-import dev.struchkov.godfather.simple.core.service.PersonSettingServiceImpl;
 import dev.struchkov.godfather.simple.core.service.StorylineMailService;
 import dev.struchkov.godfather.simple.core.service.StorylineService;
 import dev.struchkov.godfather.simple.core.service.UnitPointerServiceImpl;
@@ -75,12 +72,6 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(PersonSettingRepository.class)
-    public PersonSettingService personSettingService(PersonSettingRepository personSettingRepository) {
-        return new PersonSettingServiceImpl(personSettingRepository);
-    }
-
-    @Bean
     @ConditionalOnBean(TelegramConnect.class)
     public TelegramSending sending(
             TelegramConnect telegramConnect,
@@ -128,14 +119,13 @@ public class TelegramBotAutoconfiguration {
     @ConditionalOnBean(name = "chatMailStorylineService")
     public ChatMailAutoresponderTelegram chatMailAutoresponderTelegram(
             @Qualifier(AUTORESPONDER_EXECUTORS_SERVICE) ObjectProvider<ExecutorService> executorServiceProvider,
-            PersonSettingService personSettingService,
             ObjectProvider<ErrorHandler> errorHandlerProvider,
             ObjectProvider<AnswerTextChatMailAction> answerTextActionProvider,
 
             TelegramSending telegramSending,
             StorylineService<ChatMail> storylineService
     ) {
-        final ChatMailAutoresponderTelegram autoresponder = new ChatMailAutoresponderTelegram(personSettingService, storylineService);
+        final ChatMailAutoresponderTelegram autoresponder = new ChatMailAutoresponderTelegram(storylineService);
         autoresponder.registrationActionUnit(new AnswerCheckAction(telegramSending));
         autoresponder.registrationActionUnit(new AnswerSaveAction<>());
 
@@ -164,13 +154,12 @@ public class TelegramBotAutoconfiguration {
     public MailAutoresponderTelegram messageAutoresponderTelegram(
             @Qualifier(AUTORESPONDER_EXECUTORS_SERVICE) ObjectProvider<ExecutorService> executorServiceProvider,
             TelegramSending sending,
-            PersonSettingService personSettingService,
             ObjectProvider<ErrorHandler> errorHandlerProvider,
             ObjectProvider<AnswerTextMailAction> answerTextActionProvider,
 
             StorylineService<Mail> storylineService
     ) {
-        final MailAutoresponderTelegram autoresponder = new MailAutoresponderTelegram(personSettingService, storylineService);
+        final MailAutoresponderTelegram autoresponder = new MailAutoresponderTelegram(storylineService);
         autoresponder.registrationActionUnit(new AnswerCheckAction(sending));
         autoresponder.registrationActionUnit(new AnswerSaveAction<>());
 
