@@ -1,12 +1,10 @@
 package dev.struchkov.godfather.telegram.starter.config;
 
-import dev.struchkov.godfather.simple.context.repository.PersonSettingRepository;
 import dev.struchkov.godfather.simple.context.repository.StorylineContext;
-import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
+import dev.struchkov.godfather.simple.context.repository.StorylineHistoryRepository;
 import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.core.service.StorylineContextMapImpl;
-import dev.struchkov.godfather.simple.data.repository.impl.PersonSettingLocalRepository;
-import dev.struchkov.godfather.simple.data.repository.impl.StorylineMapRepository;
+import dev.struchkov.godfather.simple.data.repository.impl.StorylineMapHistoryRepository;
 import dev.struchkov.godfather.simple.data.repository.impl.UnitPointLocalRepository;
 import dev.struchkov.godfather.telegram.simple.context.repository.SenderRepository;
 import dev.struchkov.godfather.telegram.simple.context.service.TelegramConnect;
@@ -28,18 +26,12 @@ public class TelegramBotDataConfiguration {
         return new UnitPointLocalRepository();
     }
 
-    @Bean
-    @ConditionalOnBean(TelegramConnect.class)
-    @ConditionalOnMissingBean(PersonSettingRepository.class)
-    public PersonSettingRepository personSettingRepository() {
-        return new PersonSettingLocalRepository();
-    }
 
     @Bean
     @ConditionalOnBean(TelegramConnect.class)
-    @ConditionalOnMissingBean(StorylineRepository.class)
-    public StorylineRepository storylineRepository() {
-        return new StorylineMapRepository();
+    @ConditionalOnMissingBean(StorylineHistoryRepository.class)
+    public StorylineHistoryRepository storylineHistoryRepository() {
+        return new StorylineMapHistoryRepository();
     }
 
     @Bean

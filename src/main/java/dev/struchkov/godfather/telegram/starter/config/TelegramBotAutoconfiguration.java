@@ -2,7 +2,6 @@ package dev.struchkov.godfather.telegram.starter.config;
 
 import dev.struchkov.godfather.main.domain.content.ChatMail;
 import dev.struchkov.godfather.main.domain.content.Mail;
-import dev.struchkov.godfather.simple.context.repository.StorylineRepository;
 import dev.struchkov.godfather.simple.context.repository.UnitPointerRepository;
 import dev.struchkov.godfather.simple.context.service.ErrorHandler;
 import dev.struchkov.godfather.simple.context.service.EventDispatching;
@@ -88,29 +87,25 @@ public class TelegramBotAutoconfiguration {
     }
 
     @Bean("mailStorylineService")
-    @ConditionalOnBean(value = {UnitPointerService.class, StorylineRepository.class, PersonUnitConfiguration.class})
+    @ConditionalOnBean(value = {UnitPointerService.class, PersonUnitConfiguration.class})
     public StorylineService<Mail> mailStorylineService(
             UnitPointerService unitPointerService,
-            StorylineRepository storylineRepository,
             List<PersonUnitConfiguration> personUnitConfigurations
     ) {
         return new StorylineMailService<>(
                 unitPointerService,
-                storylineRepository,
                 new ArrayList<>(personUnitConfigurations)
         );
     }
 
     @Bean("chatMailStorylineService")
-    @ConditionalOnBean(value = {UnitPointerService.class, StorylineRepository.class, ChatUnitConfiguration.class})
+    @ConditionalOnBean(value = {UnitPointerService.class, ChatUnitConfiguration.class})
     public StorylineService<ChatMail> chatMailStorylineService(
             UnitPointerService unitPointerService,
-            StorylineRepository storylineRepository,
             List<ChatUnitConfiguration> chatUnitConfigurations
     ) {
         return new StorylineMailService<>(
                 unitPointerService,
-                storylineRepository,
                 new ArrayList<>(chatUnitConfigurations)
         );
     }
