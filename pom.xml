@@ -10,7 +10,7 @@
 
     <groupId>dev.struchkov.godfather.telegram</groupId>
     <artifactId>telegram-bot-spring-boot-starter</artifactId>
-    <version>0.0.58-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>17</java.version>
@@ -19,21 +19,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <godfather.version>0.0.63</godfather.version>
-        <telegram.bot.version>0.0.63</telegram.bot.version>
+        <!-- https://mvnrepository.com/artifact/dev.struchkov.godfather/bot-data-simple -->
+        <godfather.version>1.2.0</godfather.version>
+        <!-- https://mvnrepository.com/artifact/dev.struchkov.godfather.telegram/telegram-consumer-simple -->
+        <telegram.bot.version>1.4.0</telegram.bot.version>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-        <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
+        <plugin.maven.compiler.ver>3.12.1</plugin.maven.compiler.ver>
         <!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
         <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
-        <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
+        <plugin.maven.source.ver>3.3.0</plugin.maven.source.ver>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
-        <plugin.maven.javadoc.ver>3.5.0</plugin.maven.javadoc.ver>
+        <plugin.maven.javadoc.ver>3.6.3</plugin.maven.javadoc.ver>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
-        <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
+        <plugin.maven.gpg.ver>3.1.0</plugin.maven.gpg.ver>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
-        <plugin.maven.release.ver>3.0.0-M7</plugin.maven.release.ver>
+        <plugin.maven.release.ver>3.0.1</plugin.maven.release.ver>
     </properties>
 
     <dependencies>
